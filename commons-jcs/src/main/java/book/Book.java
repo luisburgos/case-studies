@@ -1,3 +1,5 @@
+package book;
+
 import java.io.Serializable;
 
 /**

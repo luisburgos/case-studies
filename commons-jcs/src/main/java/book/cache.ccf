@@ -1,12 +1,12 @@
 # DEFAULT CACHE REGION
 jcs.default=DC
-jcs.default.cacheattributes=org.apache.jcs.engine.CompositeCacheAttributes
+jcs.default.cacheattributes=org.apache.commons.jcs.engine.CompositeCacheAttributes
 jcs.default.cacheattributes.MaxObjects=1000
-jcs.default.cacheattributes.MemoryCacheName=org.apache.jcs.engine.memory.lru.LRUMemoryCache
+jcs.default.cacheattributes.MemoryCacheName=org.apache.commons.jcs.engine.memory.lru.LRUMemoryCache
 jcs.default.cacheattributes.UseMemoryShrinker=false
 jcs.default.cacheattributes.MaxMemoryIdleTimeSeconds=3600
 jcs.default.cacheattributes.ShrinkerIntervalSeconds=60
-jcs.default.elementattributes=org.apache.jcs.engine.ElementAttributes
+jcs.default.elementattributes=org.apache.commons.jcs.engine.ElementAttributes
 jcs.default.elementattributes.IsEternal=false
 jcs.default.elementattributes.MaxLifeSeconds=21600
 jcs.default.elementattributes.IdleTime=1800
@@ -16,22 +16,24 @@ jcs.default.elementattributes.IsLateral=true
 
 # PRE-DEFINED CACHE REGIONS
 jcs.region.bookCache=DC
-jcs.region.bookCache.cacheattributes=org.apache.jcs.engine.CompositeCacheAttributes
+jcs.region.bookCache.cacheattributes=org.apache.commons.jcs.engine.CompositeCacheAttributes
 jcs.region.bookCache.cacheattributes.MaxObjects=1000
-jcs.region.bookCache.cacheattributes.MemoryCacheName=org.apache.jcs.engine.memory.lru.LRUMemoryCache
+jcs.region.bookCache.cacheattributes.MemoryCacheName=org.apache.commons.jcs.engine.memory.lru.LRUMemoryCache
 jcs.region.bookCache.cacheattributes.UseMemoryShrinker=false
 jcs.region.bookCache.cacheattributes.MaxMemoryIdleTimeSeconds=3600
 jcs.region.bookCache.cacheattributes.ShrinkerIntervalSeconds=60
 jcs.region.bookCache.cacheattributes.MaxSpoolPerRun=500
-jcs.region.bookCache.elementattributes=org.apache.jcs.engine.ElementAttributes
+jcs.region.bookCache.elementattributes=org.apache.commons.jcs.engine.ElementAttributes
 jcs.region.bookCache.elementattributes.IsEternal=false
 
 # AVAILABLE AUXILIARY CACHES
-jcs.auxiliary.DC=org.apache.jcs.auxiliary.disk.indexed.IndexedDiskCacheFactory
-jcs.auxiliary.DC.attributes=org.apache.jcs.auxiliary.disk.indexed.IndexedDiskCacheAttributes
+jcs.auxiliary.DC=org.apache.commons.jcs.auxiliary.disk.indexed.IndexedDiskCacheFactory
+jcs.auxiliary.DC.attributes=org.apache.commons.jcs.auxiliary.disk.indexed.IndexedDiskCacheAttributes
 jcs.auxiliary.DC.attributes.DiskPath=c:/temp
 jcs.auxiliary.DC.attributes.MaxPurgatorySize=10000000
 jcs.auxiliary.DC.attributes.MaxKeySize=1000000
 jcs.auxiliary.DC.attributes.MaxRecycleBinSize=5000
 jcs.auxiliary.DC.attributes.OptimizeAtRemoveCount=300000
 jcs.auxiliary.DC.attributes.ShutdownSpoolTimeLimit=60
+
+
