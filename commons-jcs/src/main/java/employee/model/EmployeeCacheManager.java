@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 /**
+ * Manage the storage of objects in the cache
  * Created by luisburgos on 26/10/15.
  */
 public class EmployeeCacheManager extends Model implements Observer{
@@ -37,6 +38,10 @@ public class EmployeeCacheManager extends Model implements Observer{
         return cacheManager;
     }
 
+    /**
+     * Add new employee object to the cache
+     * @param employee
+     */
     public void addEmployee(Employee employee) {
         try {
             cache.put(employee.getId(), employee);
@@ -64,6 +69,9 @@ public class EmployeeCacheManager extends Model implements Observer{
         }
     }
 
+    /**
+     * Load the information fromo the database to the cache
+     */
     public void init() {
         EmployeeDAO dao = new EmployeeDAO();
         for(Employee e : dao.getAllEmployees()){
@@ -72,6 +80,9 @@ public class EmployeeCacheManager extends Model implements Observer{
         notify(new Startup());
     }
 
+    /**
+     * @return an ArrayList representing all the objects Employee in the cache
+     */
     public ArrayList<Employee> getAllEmployees() {
         ArrayList<Employee> allEmployees = new ArrayList<>();
 
@@ -88,11 +99,17 @@ public class EmployeeCacheManager extends Model implements Observer{
 
     }
 
+    /**
+     * @return an Employee representing the las object added to the cache
+     */
     public Employee getLastEmployeeAdded() {
         Set<Object> keys = getCacheKeys();
         return cache.get((Integer) keys.size());
     }
 
+    /**
+     * Clear the cache entries
+     */
     public void removeAllEmployees(){
         Set<Object> keys = getCacheKeys();
         for(Object key : keys){

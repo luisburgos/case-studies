@@ -17,6 +17,11 @@ public class EmployeeDAO {
         db = DatabaseSource.getDatabaseSource();
     }
 
+    /**
+     * Insert a new employee entry to the EMPLOYEE table
+     * @param employee
+     * @return a Boolean depending on the success of the transaction
+     */
     public boolean insert(Employee employee){
 
         con = db.openConnection();
@@ -43,10 +48,17 @@ public class EmployeeDAO {
         return true;
     }
 
+    /**
+     * @param id
+     * @return an Employee given an id
+     */
     public Employee getEmployeeById(int id){
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @return an ArrayList which contains all entries in Employee database table
+     */
     public ArrayList<Employee> getAllEmployees(){
         ArrayList<Employee> allEmployeesInDatabase = new ArrayList<Employee>();
 
@@ -75,6 +87,9 @@ public class EmployeeDAO {
         return allEmployeesInDatabase;
     }
 
+    /**
+     * @return an Employee representing the last entry on Employee table
+     */
     public Employee getLastEmployeeAdded(){
         Employee lastEmployeeAdded = null;
         String query = "SELECT * from EMPLOYEE where ID_EMPLOYEE = (SELECT MAX(ID_EMPLOYEE) from EMPLOYEE)";

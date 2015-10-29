@@ -95,6 +95,11 @@ public class AddEmployeeController extends Controller {
         mainFrame.setVisible(true);
     }
 
+    /**
+     * Triggers the function related to the event type
+     * @param event
+     * @param params
+     */
     public void handleEvent(Event event, Object... params) {
         if(event.getType() == EventTypes.NEW_EMPLOYEE){
             mModel.callFunctionByName(Employees.class, Employee.class, "addNewEmployeeToDatabase", params);
