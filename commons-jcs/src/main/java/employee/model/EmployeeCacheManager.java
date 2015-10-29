@@ -17,7 +17,6 @@ import java.util.Set;
  */
 public class EmployeeCacheManager extends Model implements Observer{
 
-    private static final int MAX_OBJECTS = 1000;
     private CacheAccess<Integer, Employee> cache = null;
     private static final String EMPLOYEE_CACHE_NAME = "employeeCache";
     private static EmployeeCacheManager cacheManager;
@@ -92,4 +91,5 @@ public class EmployeeCacheManager extends Model implements Observer{
                 CompositeCacheManager.getInstance(EMPLOYEE_CACHE_NAME).getCache(EMPLOYEE_CACHE_NAME).getKeySet();
         return cache.get((Integer) keys.size());
     }
+
 }
