@@ -5,7 +5,6 @@ import employee.events.EventTypes;
 import employee.misc.Observer;
 import employee.model.Employee;
 import employee.model.EmployeeCacheManager;
-import employee.model.EmployeeDAO;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -15,8 +14,8 @@ import java.util.ArrayList;
  */
 public class EmployeeTableView implements Observer {
 
-    private AdapterTable modeloTabla;
-    private JFrame tablaVentana;
+    private AdapterTable adapterTable;
+    private JFrame employeesTable;
 
     public EmployeeTableView() {
         initComponents();
@@ -26,20 +25,21 @@ public class EmployeeTableView implements Observer {
         JTable datosEmpleadosTabla = new JTable();
         //String[] nombreColumnas = {"ID","Name", "Email", "Address"};
         String[] nombreColumnas = {"Name", "Email", "Address"};
-        modeloTabla = new AdapterTable(nombreColumnas);
-        datosEmpleadosTabla.setModel(modeloTabla);
+        adapterTable = new AdapterTable(nombreColumnas);
+        datosEmpleadosTabla.setModel(adapterTable);
 
-        tablaVentana = new JFrame("Datos de Empleados");
+        employeesTable = new JFrame("Empleados");
         JPanel panelContenedor = new JPanel();
 
         JScrollPane vistaDeTablaScroll = new JScrollPane();
         vistaDeTablaScroll.setViewportView(datosEmpleadosTabla);
         panelContenedor.add(vistaDeTablaScroll);
 
-        tablaVentana.setContentPane(panelContenedor);
-        tablaVentana.pack();
-        tablaVentana.setLocationRelativeTo(null);
-        tablaVentana.setVisible(true);
+        employeesTable.setContentPane(panelContenedor);
+        employeesTable.pack();
+        employeesTable.setLocationRelativeTo(null);
+        employeesTable.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        employeesTable.setVisible(true);
     }
 
     public void addEmployeeRow(Employee employee){
@@ -49,11 +49,11 @@ public class EmployeeTableView implements Observer {
         row.add(employee.getName());
         row.add(employee.getEmail());
         row.add(employee.getAddress());
-        modeloTabla.addRow(row);
+        adapterTable.addRow(row);
     }
 
     public void resetEmployeeTable(){
-        modeloTabla.resetTable();
+        adapterTable.resetTable();
     }
 
     public void update(Event event) {

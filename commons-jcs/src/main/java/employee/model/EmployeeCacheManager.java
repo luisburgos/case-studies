@@ -75,8 +75,7 @@ public class EmployeeCacheManager extends Model implements Observer{
     public ArrayList<Employee> getAllEmployees() {
         ArrayList<Employee> allEmployees = new ArrayList<>();
 
-        Set<Object> keys =
-                CompositeCacheManager.getInstance(EMPLOYEE_CACHE_NAME).getCache(EMPLOYEE_CACHE_NAME).getKeySet();
+        Set<Object> keys = getCacheKeys();
 
         for(Object key : keys){
             Employee e = cache.get((Integer) key);
@@ -90,9 +89,18 @@ public class EmployeeCacheManager extends Model implements Observer{
     }
 
     public Employee getLastEmployeeAdded() {
-        Set<Object> keys =
-                CompositeCacheManager.getInstance(EMPLOYEE_CACHE_NAME).getCache(EMPLOYEE_CACHE_NAME).getKeySet();
+        Set<Object> keys = getCacheKeys();
         return cache.get((Integer) keys.size());
     }
 
+    public void removeAllEmployees(){
+        Set<Object> keys = getCacheKeys();
+        for(Object key : keys){
+            cache.remove((Integer) key);
+        }
+    }
+
+    private Set<Object> getCacheKeys() {
+        return  CompositeCacheManager.getInstance(EMPLOYEE_CACHE_NAME).getCache(EMPLOYEE_CACHE_NAME).getKeySet();
+    }
 }

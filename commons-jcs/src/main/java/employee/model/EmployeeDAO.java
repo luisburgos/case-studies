@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class EmployeeDAO {
 
-    private DatabaseSource db = DatabaseSource.getDatabaseSource();
+    private DatabaseSource db;
     private Connection con;
 
     public EmployeeDAO() {

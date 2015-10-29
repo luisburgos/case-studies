@@ -29,7 +29,6 @@ public class Employees extends Model {
         EmployeeDAO dao = new EmployeeDAO();
         if(dao.insert(employee)){
             addNewEmployeeToCache(dao.getLastEmployeeAdded());
-            notify(new NewEmployee());
         }else {
             System.out.println("Error al agregar a base de datos");
         }
@@ -38,6 +37,7 @@ public class Employees extends Model {
 
     private void addNewEmployeeToCache(Employee employee) {
         EmployeeCacheManager.getManager().addEmployee(employee);
+        notify(new NewEmployee());
     }
 
     public ArrayList<Employee> getAllEmployees(){

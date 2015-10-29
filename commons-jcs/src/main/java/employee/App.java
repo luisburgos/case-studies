@@ -26,7 +26,7 @@ public class App {
         EmployeeCacheManager.getManager().register(new Startup(), table);
 
         employees.register(new NewEmployee(), table);
-        employees.register(new Startup(), table);
+        //employees.register(new Startup(), table);
         employees.register(new Startup(), EmployeeCacheManager.getManager());
 
         employees.notify(new Startup());

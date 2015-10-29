@@ -34,11 +34,12 @@ public class AddEmployeeController extends Controller {
         mainFrame = new JFrame();
         mainFrame.setSize(450, 200);
         mainFrame.setLocationRelativeTo(null);
-        mainFrame.addWindowListener(new WindowAdapter() {
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        /*mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
                 mainFrame.dispose();
             }
-        });
+        });*/
 
         panelFields = new JPanel();
 
@@ -77,6 +78,7 @@ public class AddEmployeeController extends Controller {
         {
             public void actionPerformed(ActionEvent e)
             {
+
                 mainFrame.dispose();
             }
         });
@@ -101,6 +103,12 @@ public class AddEmployeeController extends Controller {
 
     public void update(Event event) {
         //Do nothing
+    }
+
+    private void clearFields(){
+        nameTextField.setText(null);
+        emailTextField.setText(null);
+        addressTextField.setText(null);
     }
 
 }
