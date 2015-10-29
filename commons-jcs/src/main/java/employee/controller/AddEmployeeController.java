@@ -1,7 +1,11 @@
 package employee.controller;
 
 import employee.events.Event;
+import employee.events.EventTypes;
+import employee.events.NewEmployee;
 import employee.misc.StringRes;
+import employee.model.Employee;
+import employee.model.Employees;
 import employee.model.Model;
 
 import javax.swing.*;
@@ -18,8 +22,8 @@ public class AddEmployeeController extends Controller {
     private JFrame mainFrame;
     private JPanel panelButtons, panelFields;
     private JButton buttonAdd, buttonCancel;
-    private JLabel labelName, labelAddress;
-    private JTextField nameTextField, lastnameTextField;
+    private JLabel labelName, labelEmail, labelAddress;
+    private JTextField nameTextField, emailTextField, addressTextField;
 
     public AddEmployeeController(Model model, Event event) {
         super(model, event);
@@ -40,14 +44,18 @@ public class AddEmployeeController extends Controller {
 
         labelName = new JLabel(StringRes.LABEL_NAME);
         nameTextField = new JTextField(10);
+        labelEmail = new JLabel(StringRes.LABEL_EMAIL);
+        emailTextField = new JTextField(30);
         labelAddress = new JLabel(StringRes.LABEL_ADDRESS);
-        lastnameTextField = new JTextField(10);
+        addressTextField = new JTextField(20);
 
         panelFields.setLayout(new BoxLayout(panelFields, BoxLayout.Y_AXIS));
         panelFields.add(labelName);
         panelFields.add(nameTextField);
+        panelFields.add(labelEmail);
+        panelFields.add(emailTextField);
         panelFields.add(labelAddress);
-        panelFields.add(lastnameTextField);
+        panelFields.add(addressTextField);
 
         panelButtons = new JPanel();
         buttonAdd = new JButton(StringRes.BTN_ADD);
@@ -57,12 +65,11 @@ public class AddEmployeeController extends Controller {
         {
             public void actionPerformed(ActionEvent e)
             {
-                /*Candidate candidate = new Candidate();
-                candidate.setName(nameTextField.getText());
-                candidate.setLastname(lastnameTextField.getText());
-                candidate.setParty(partyTextField.getText());
-                candidate.setVotes(0);
-                handleEvent(new NewCandidate(), candidate);*/
+                Employee newEmployee = new Employee();
+                newEmployee.setName(nameTextField.getText());
+                newEmployee.setEmail(emailTextField.getText());
+                newEmployee.setAddress(addressTextField.getText());
+                handleEvent(new NewEmployee(EventTypes.NEW_EMPLOYEE), newEmployee);
             }
         });
 
@@ -87,11 +94,13 @@ public class AddEmployeeController extends Controller {
     }
 
     public void handleEvent(Event event, Object... params) {
-        //mModel.callFunctionByName(Votations.class, Candidate.class, "addCandidate", params);
+        if(event.getType() == EventTypes.NEW_EMPLOYEE){
+            mModel.callFunctionByName(Employees.class, Employee.class, "addNewEmployeeToDatabase", params);
+        }
     }
 
     public void update(Event event) {
-
+        //Do nothing
     }
 
 }

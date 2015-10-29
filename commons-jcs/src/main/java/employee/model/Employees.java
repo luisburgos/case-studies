@@ -1,6 +1,6 @@
 package employee.model;
 
-import employee.misc.JSONtoCandidates;
+import employee.events.NewEmployee;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,6 @@ public class Employees extends Model {
 
     private Employees(){
         super();
-        candidates = JSONtoCandidates.loadCandidates();
     }
 
     public synchronized static Employees getInstance(){
@@ -23,6 +22,27 @@ public class Employees extends Model {
             employees = new Employees();
         }
         return employees;
+    }
+
+    public void addNewEmployeeToDatabase(Employee employee){
+        
+        EmployeeDAO dao = new EmployeeDAO();
+        if(dao.insert(employee)){
+            addNewEmployeeToCache(dao.getLastEmployeeAdded());
+            notify(new NewEmployee());
+        }else {
+            System.out.println("Error al agregar a base de datos");
+        }
+        
+    }
+
+    private void addNewEmployeeToCache(Employee employee) {
+        EmployeeCacheManager.getManager().addEmployee(employee);
+    }
+
+    public ArrayList<Employee> getAllEmployees(){
+        EmployeeDAO dao = new EmployeeDAO();
+        return dao.getAllEmployees();
     }
 
 }

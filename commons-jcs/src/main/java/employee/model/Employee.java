@@ -10,24 +10,27 @@ import java.io.Serializable;
  */
 public class Employee implements Serializable {
 
-    private String id;
+    private int id;
     private String name;
     private String email;
     private String address;
 
-    public Employee() {}
+    public Employee() {
+        this.id = -1;
+    }
 
-    public Employee(String id, String name, String address) {
+    public Employee(int id, String name, String email, String address) {
         this.id = id;
         this.name = name;
+        this.email = email;
         this.address = address;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -53,5 +56,15 @@ public class Employee implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
 }
