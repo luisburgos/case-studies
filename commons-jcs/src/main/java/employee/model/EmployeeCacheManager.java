@@ -1,6 +1,7 @@
 package employee.model;
 
 import employee.events.Event;
+import employee.events.EventTypes;
 import employee.events.Startup;
 import employee.misc.Observable;
 import employee.misc.Observer;
@@ -58,7 +59,9 @@ public class EmployeeCacheManager extends Model implements Observer{
 
     @Override
     public void update(Event event) {
-
+        if (event.getType() == EventTypes.STARTUP){
+            init();
+        }
     }
 
     public void init() {
