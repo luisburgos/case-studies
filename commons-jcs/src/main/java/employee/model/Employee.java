@@ -8,10 +8,11 @@ import java.io.Serializable;
  *
  * Created by luisburgos on 26/10/15.
  */
-public class Employee implements Serializable{
+public class Employee implements Serializable {
 
     private String id;
     private String name;
+    private String email;
     private String address;
 
     public Employee() {}
@@ -36,6 +37,14 @@ public class Employee implements Serializable{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getAddress() {
