@@ -67,6 +67,20 @@ public class EmployeeCacheManager extends Model implements Observer{
         if (event.getType() == EventTypes.STARTUP){
             init();
         }
+
+        if(event.getType() == EventTypes.SHUTDOWN){
+            dropCacheData();
+        }
+    }
+
+    /**
+     * Removes all entries information existing on cache.
+     */
+    private void dropCacheData() {
+        System.out.println("Dropping all cache data");
+        for(Object key : getCacheKeys()){
+            cache.remove((Integer) key);
+        }
     }
 
     /**
@@ -105,16 +119,6 @@ public class EmployeeCacheManager extends Model implements Observer{
     public Employee getLastEmployeeAdded() {
         Set<Object> keys = getCacheKeys();
         return cache.get((Integer) keys.size());
-    }
-
-    /**
-     * Clear the cache entries
-     */
-    public void removeAllEmployees(){
-        Set<Object> keys = getCacheKeys();
-        for(Object key : keys){
-            cache.remove((Integer) key);
-        }
     }
 
     private Set<Object> getCacheKeys() {

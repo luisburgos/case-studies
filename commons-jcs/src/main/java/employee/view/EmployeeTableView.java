@@ -16,26 +16,28 @@ public class EmployeeTableView implements Observer {
 
     private AdapterTable adapterTable;
     private JFrame employeesTable;
+    private JTable mTable;
+    private JPanel panelContainer;
+
+    private final String[] COLUMN_NAMES = {"Name", "Email", "Address"};
 
     public EmployeeTableView() {
         initComponents();
     }
 
     private void initComponents() {
-        JTable datosEmpleadosTabla = new JTable();
-        //String[] nombreColumnas = {"ID","Name", "Email", "Address"};
-        String[] nombreColumnas = {"Name", "Email", "Address"};
-        adapterTable = new AdapterTable(nombreColumnas);
-        datosEmpleadosTabla.setModel(adapterTable);
+        mTable = new JTable();
+        adapterTable = new AdapterTable(COLUMN_NAMES);
+        mTable.setModel(adapterTable);
 
         employeesTable = new JFrame("Empleados");
-        JPanel panelContenedor = new JPanel();
+        panelContainer = new JPanel();
 
-        JScrollPane vistaDeTablaScroll = new JScrollPane();
-        vistaDeTablaScroll.setViewportView(datosEmpleadosTabla);
-        panelContenedor.add(vistaDeTablaScroll);
+        JScrollPane mTableScrollView = new JScrollPane();
+        mTableScrollView.setViewportView(mTable);
+        panelContainer.add(mTableScrollView);
 
-        employeesTable.setContentPane(panelContenedor);
+        employeesTable.setContentPane(panelContainer);
         employeesTable.pack();
         employeesTable.setLocationRelativeTo(null);
         employeesTable.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -45,7 +47,6 @@ public class EmployeeTableView implements Observer {
     public void addEmployeeRow(Employee employee){
 
         ArrayList row = new ArrayList();
-        //row.add(employee.getId());
         row.add(employee.getName());
         row.add(employee.getEmail());
         row.add(employee.getAddress());

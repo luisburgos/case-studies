@@ -2,10 +2,7 @@ package employee;
 
 import employee.controller.AddEmployeeController;
 import employee.controller.Controller;
-import employee.events.Event;
-import employee.events.EventTypes;
-import employee.events.NewEmployee;
-import employee.events.Startup;
+import employee.events.*;
 import employee.model.Employee;
 import employee.model.EmployeeCacheManager;
 import employee.model.Employees;
@@ -25,9 +22,11 @@ public class App {
 
         EmployeeCacheManager.getManager().register(new Startup(), table);
 
+
         employees.register(new NewEmployee(), table);
         //employees.register(new Startup(), table);
         employees.register(new Startup(), EmployeeCacheManager.getManager());
+        employees.register(new Shutdown(), EmployeeCacheManager.getManager());
 
         employees.notify(new Startup());
     }

@@ -1,8 +1,6 @@
 package employee.controller;
 
-import employee.events.Event;
-import employee.events.EventTypes;
-import employee.events.NewEmployee;
+import employee.events.*;
 import employee.misc.StringRes;
 import employee.model.Employee;
 import employee.model.Employees;
@@ -34,12 +32,13 @@ public class AddEmployeeController extends Controller {
         mainFrame = new JFrame();
         mainFrame.setSize(450, 200);
         mainFrame.setLocationRelativeTo(null);
-        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        /*mainFrame.addWindowListener(new WindowAdapter() {
+        //mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
-                mainFrame.dispose();
+                handleEvent(new Shutdown());
+                System.exit(WindowConstants.EXIT_ON_CLOSE);
             }
-        });*/
+        });
 
         panelFields = new JPanel();
 
@@ -78,7 +77,7 @@ public class AddEmployeeController extends Controller {
         {
             public void actionPerformed(ActionEvent e)
             {
-
+                handleEvent(new Shutdown());
                 mainFrame.dispose();
             }
         });
@@ -103,6 +102,10 @@ public class AddEmployeeController extends Controller {
     public void handleEvent(Event event, Object... params) {
         if(event.getType() == EventTypes.NEW_EMPLOYEE){
             mModel.callFunctionByName(Employees.class, Employee.class, "addNewEmployeeToDatabase", params);
+        }
+
+        if(event.getType() == EventTypes.SHUTDOWN){
+            mModel.notify(event);
         }
     }
 
