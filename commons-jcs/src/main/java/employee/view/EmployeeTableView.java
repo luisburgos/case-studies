@@ -7,66 +7,47 @@ import employee.model.Employee;
 import employee.model.EmployeeCacheManager;
 
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by luisburgos on 26/10/15.
  */
-public class EmployeeTableView implements Observer {
+public class EmployeeTableView extends TableView implements Observer {
 
-    private AdapterTable adapterTable;
-    private JFrame employeesTable;
-    private JTable mTable;
-    private JPanel panelContainer;
-
-    private final String[] COLUMN_NAMES = {"Name", "Email", "Address"};
+    private static final String[] COLUMN_NAMES = new String[]{"Name", "Email", "Address"};
 
     public EmployeeTableView() {
-        initComponents();
+        super("Employee", COLUMN_NAMES);
     }
 
-    private void initComponents() {
-        mTable = new JTable();
-        adapterTable = new AdapterTable(COLUMN_NAMES);
-        mTable.setModel(adapterTable);
-
-        employeesTable = new JFrame("Empleados");
-        panelContainer = new JPanel();
-
-        JScrollPane mTableScrollView = new JScrollPane();
-        mTableScrollView.setViewportView(mTable);
-        panelContainer.add(mTableScrollView);
-
-        employeesTable.setContentPane(panelContainer);
-        employeesTable.pack();
-        employeesTable.setLocationRelativeTo(null);
-        employeesTable.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        employeesTable.setVisible(true);
+    public void update(Event event) {
+        switch (event.getType()){
+            case EventTypes.STARTUP:
+                initTableData();
+                break;
+            case EventTypes.NEW_EMPLOYEE:
+                updateWithLastAdded();
+                break;
+        }
     }
 
-    public void addEmployeeRow(Employee employee){
+    private void updateWithLastAdded() {
+        addEmployee(EmployeeCacheManager.getManager().getLastEmployeeAdded());
+    }
 
+    private void initTableData() {
+        for(Employee employee : EmployeeCacheManager.getManager().getAllEmployees()){
+            addEmployee(employee);
+        }
+    }
+
+    public void addEmployee(Employee employee) {
         ArrayList row = new ArrayList();
         row.add(employee.getName());
         row.add(employee.getEmail());
         row.add(employee.getAddress());
-        adapterTable.addRow(row);
-    }
-
-    public void resetEmployeeTable(){
-        adapterTable.resetTable();
-    }
-
-    public void update(Event event) {
-        if(event.getType() == EventTypes.STARTUP){
-            for(Employee e : EmployeeCacheManager.getManager().getAllEmployees()){
-                addEmployeeRow(e);
-            }
-        }
-
-        if(event.getType() == EventTypes.NEW_EMPLOYEE){
-            addEmployeeRow(EmployeeCacheManager.getManager().getLastEmployeeAdded());
-        }
+        add(row);
     }
 
 }
