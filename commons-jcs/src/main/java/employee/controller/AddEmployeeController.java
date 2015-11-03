@@ -1,11 +1,10 @@
 package employee.controller;
 
 import employee.events.*;
-import employee.misc.StringRes;
-import employee.model.Employee;
+import employee.model.entities.Employee;
 import employee.model.Employees;
 import employee.model.Model;
-import employee.view.EntityInputForm;
+import employee.components.EntityInputForm;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -47,6 +46,14 @@ public class AddEmployeeController extends Controller {
         //Do nothing
     }
 
+    private boolean isEmployeeValid(Employee newEmployee) {
+        boolean nameValid = newEmployee.getName() != null && !newEmployee.getName().isEmpty();
+        boolean emailValid = newEmployee.getEmail() != null && !newEmployee.getEmail().isEmpty();
+        boolean addressValid = newEmployee.getAddress() != null && !newEmployee.getAddress().isEmpty();
+
+        return (nameValid && emailValid && addressValid);
+    }
+
     ActionListener buttonAddActionListener = new ActionListener()
     {
         public void actionPerformed(ActionEvent e)
@@ -56,20 +63,12 @@ public class AddEmployeeController extends Controller {
             newEmployee.setEmail(inputForm.getTextFildByName("email").getText());
             newEmployee.setAddress(inputForm.getTextFildByName("address").getText());
             if(isEmployeeValid(newEmployee)){
-                handleEvent(new NewEmployee(EventTypes.NEW_EMPLOYEE), newEmployee);
+                handleEvent(new NewEmployee(), newEmployee);
             }else {
                 JOptionPane.showMessageDialog (null, "Fill all fields", "Empty fields", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     };
-
-    private boolean isEmployeeValid(Employee newEmployee) {
-        boolean nameValid = newEmployee.getName() != null && newEmployee.getName().isEmpty();
-        boolean emailValid = newEmployee.getEmail() != null && !newEmployee.getEmail().isEmpty();
-        boolean addressValid = newEmployee.getAddress() != null && !newEmployee.getAddress().isEmpty();
-
-        return (nameValid && emailValid && addressValid);
-    }
 
     ActionListener buttonCancelActionListener = new ActionListener()
     {

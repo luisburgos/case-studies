@@ -15,16 +15,16 @@ jcs.default.elementattributes.IsRemote=true
 jcs.default.elementattributes.IsLateral=true
 
 # PRE-DEFINED CACHE REGIONS
-jcs.region.employeeCache=DC
-jcs.region.employeeCache.cacheattributes=org.apache.commons.jcs.engine.CompositeCacheAttributes
-jcs.region.employeeCache.cacheattributes.MaxObjects=1000
-jcs.region.employeeCache.cacheattributes.MemoryCacheName=org.apache.commons.jcs.engine.memory.lru.LRUMemoryCache
-jcs.region.employeeCache.cacheattributes.UseMemoryShrinker=false
-jcs.region.employeeCache.cacheattributes.MaxMemoryIdleTimeSeconds=3600
-jcs.region.employeeCache.cacheattributes.ShrinkerIntervalSeconds=60
-jcs.region.employeeCache.cacheattributes.MaxSpoolPerRun=500
-jcs.region.employeeCache.elementattributes=org.apache.commons.jcs.engine.ElementAttributes
-jcs.region.employeeCache.elementattributes.IsEternal=false
+jcs.region.employee=DC
+jcs.region.employee.cacheattributes=org.apache.commons.jcs.engine.CompositeCacheAttributes
+jcs.region.employee.cacheattributes.MaxObjects=1000
+jcs.region.employee.cacheattributes.MemoryCacheName=org.apache.commons.jcs.engine.memory.lru.LRUMemoryCache
+jcs.region.employee.cacheattributes.UseMemoryShrinker=false
+jcs.region.employee.cacheattributes.MaxMemoryIdleTimeSeconds=3600
+jcs.region.employee.cacheattributes.ShrinkerIntervalSeconds=60
+jcs.region.employee.cacheattributes.MaxSpoolPerRun=500
+jcs.region.employee.elementattributes=org.apache.commons.jcs.engine.ElementAttributes
+jcs.region.employee.elementattributes.IsEternal=false
 
 # AVAILABLE AUXILIARY CACHES
 jcs.auxiliary.DC=org.apache.commons.jcs.auxiliary.disk.indexed.IndexedDiskCacheFactory

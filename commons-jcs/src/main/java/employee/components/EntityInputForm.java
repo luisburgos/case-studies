@@ -1,4 +1,4 @@
-package employee.view;
+package employee.components;
 
 import employee.misc.StringRes;
 
@@ -6,8 +6,6 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by luisburgos on 1/11/15.

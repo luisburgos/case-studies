@@ -1,7 +1,6 @@
-package employee.view;
+package employee.components;
 
 import javax.swing.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**

@@ -1,4 +1,4 @@
-package employee.model;
+package employee.model.entities;
 
 import java.io.Serializable;
 
