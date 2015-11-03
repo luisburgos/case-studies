@@ -85,6 +85,7 @@ public class CacheManager extends Model implements Observer{
                 try {
                     //TODO: Fix hardcoded EmployeeDAO.
                     loadCacheInformationFromDatabase(region, new EmployeeDAO());
+                    notify(event);
                 } catch (RegionNotFoundException e) {
                     e.printStackTrace();
                 }
