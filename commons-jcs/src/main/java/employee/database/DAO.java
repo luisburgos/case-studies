@@ -9,12 +9,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
+ * Generic data access object definition for make transactios
+ * to SQLite database.
+ *
  * Created by luisburgos on 3/11/15.
  */
 public abstract class DAO<K, V> {
 
-    private DatabaseSource db;
-    private Connection con;
+    protected DatabaseSource db;
+    protected Connection con;
 
     public DAO() {
         db = DatabaseSource.getDatabaseSource();

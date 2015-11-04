@@ -7,17 +7,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
+ * Manage transactions on the EMPLOYEE table of database.
  * Created by luisburgos on 28/10/15.
  */
 public class EmployeeDAO extends DAO {
 
-    private DatabaseSource db;
-    private Connection con;
-
     public EmployeeDAO() {
-        db = DatabaseSource.getDatabaseSource();
+        super();
     }
 
+    /**
+     * @return a HashMap representing all the entries of
+     * EMPLOYEE table from database.
+     */
     @Override
     public HashMap<Integer, Employee> getAll() {
         HashMap<Integer, Employee> allEmployeesInDatabase = new HashMap<>();
@@ -44,7 +46,6 @@ public class EmployeeDAO extends DAO {
         }
         return allEmployeesInDatabase;
     }
-
 
     /**
      * Insert a new employee entry to the EMPLOYEE table
@@ -77,11 +78,19 @@ public class EmployeeDAO extends DAO {
         return true;
     }
 
+    /**
+     * @param id of the employee to look at.
+     * @return an Employee representing the entry for the specific id.
+     */
     @Override
     public Employee getById(int id) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @return an Employee representing the last entry on
+     * EMPLOYEE table from database.
+     */
     @Override
     public Employee getLastAdded() {
         Employee lastEmployeeAdded = null;

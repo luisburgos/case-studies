@@ -1,6 +1,9 @@
 package employee.events;
 
 /**
+ * This class represents the event when a {@link employee.cache.CacheRegion} is
+ * modified and holds the name of that region.
+ *
  * Created by luisburgos on 2/11/15.
  */
 public class CacheRegionModified extends Event {
