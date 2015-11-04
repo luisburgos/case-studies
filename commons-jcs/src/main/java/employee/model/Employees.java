@@ -2,6 +2,7 @@ package employee.model;
 
 import employee.cache.CacheManager;
 import employee.cache.RegionNotFoundException;
+import employee.database.DAO;
 import employee.database.EmployeeDAO;
 import employee.events.NewEmployee;
 import employee.model.entities.Employee;
@@ -35,9 +36,9 @@ public class Employees extends Model {
      * @param employee
      */
     public void addNewEmployeeToDatabase(Employee employee){
-        EmployeeDAO dao = new EmployeeDAO();
+        DAO dao = new EmployeeDAO();
         if(dao.insert(employee)){
-            addNewEmployeeToCache(dao.getLastAdded());
+            addNewEmployeeToCache((Employee) dao.getLastAdded());
         }else {
             System.out.println("Error al agregar a base de datos");
         }
@@ -65,7 +66,7 @@ public class Employees extends Model {
      * @return an Collection representing all entries on the table EMPLOYEE from database
      */
     public Collection<Employee> getAllEmployees(){
-        EmployeeDAO dao = new EmployeeDAO();
+        DAO dao = new EmployeeDAO();
         return dao.getAll().values();
     }
 
