@@ -5,6 +5,9 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Manage the connection to SQLite database
+ */
 public class DatabaseSource {
 
     private static final String DATABASE_JDBC_NAME = "org.sqlite.JDBC";

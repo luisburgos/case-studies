@@ -1,17 +1,23 @@
 package employee.model;
 
+import employee.cache.CacheManager;
+import employee.cache.RegionNotFoundException;
+import employee.database.DAO;
+import employee.database.EmployeeDAO;
 import employee.events.NewEmployee;
+import employee.model.entities.Employee;
 
+import java.rmi.server.ServerRef;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by luisburgos on 26/10/15.
  */
 public class Employees extends Model {
 
+    public static final String EMPLOYEE_CACHE_NAME = "employee";
     private static Employees employees;
-
-    private ArrayList<Employee> candidates;
 
     private Employees(){
         super();
@@ -30,14 +36,12 @@ public class Employees extends Model {
      * @param employee
      */
     public void addNewEmployeeToDatabase(Employee employee){
-        
-        EmployeeDAO dao = new EmployeeDAO();
+        DAO dao = new EmployeeDAO();
         if(dao.insert(employee)){
-            addNewEmployeeToCache(dao.getLastEmployeeAdded());
+            addNewEmployeeToCache((Employee) dao.getLastAdded());
         }else {
             System.out.println("Error al agregar a base de datos");
         }
-        
     }
 
     /**
@@ -45,16 +49,25 @@ public class Employees extends Model {
      * @param employee
      */
     private void addNewEmployeeToCache(Employee employee) {
-        EmployeeCacheManager.getManager().addEmployee(employee);
-        notify(new NewEmployee());
+        try {
+            CacheManager
+                    .getManager()
+                    .addElementToRegion(
+                            EMPLOYEE_CACHE_NAME,
+                            employee.getId(),
+                            employee
+                    );
+        } catch (RegionNotFoundException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**
-     * @return an ArrayList representing all entries on the table EMPLOYEE from database
+     * @return an Collection representing all entries on the table EMPLOYEE from database
      */
-    public ArrayList<Employee> getAllEmployees(){
-        EmployeeDAO dao = new EmployeeDAO();
-        return dao.getAllEmployees();
+    public Collection<Employee> getAllEmployees(){
+        DAO dao = new EmployeeDAO();
+        return dao.getAll().values();
     }
 
 }

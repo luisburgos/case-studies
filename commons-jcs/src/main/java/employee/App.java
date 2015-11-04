@@ -1,13 +1,10 @@
 package employee;
 
+import employee.cache.CacheManager;
 import employee.controller.AddEmployeeController;
 import employee.controller.Controller;
-import employee.events.Event;
-import employee.events.EventTypes;
-import employee.events.NewEmployee;
-import employee.events.Startup;
-import employee.model.Employee;
-import employee.model.EmployeeCacheManager;
+import employee.events.*;
+import employee.misc.Observer;
 import employee.model.Employees;
 import employee.model.Model;
 import employee.view.EmployeeTableView;
@@ -15,21 +12,49 @@ import employee.view.EmployeeTableView;
 /**
  * Created by luisburgos on 26/10/15.
  */
-public class App {
+public class App implements Observer{
+
+    private Model mModel;
+    private Controller mController;
+    private EmployeeTableView mTable;
+
+    public App (){
+        start();
+    }
+
+    private void init(){
+        mModel = Employees.getInstance();
+        mController = new AddEmployeeController(mModel, new NewEmployee());
+        mTable = new EmployeeTableView();
+
+        mModel.register(new Startup(), CacheManager.getManager());
+        //mModel.register(new Startup(), mTable);
+        mModel.register(new Shutdown(), CacheManager.getManager());
+        mModel.register(new CacheRegionModified(), mTable);
+        mModel.register(new CacheRegionModified(), this);
+
+        CacheManager.getManager().register(new Startup(), mTable);
+        CacheManager.getManager().register(new CacheRegionModified(), this);
+    }
+
+    private void start(){
+        init();
+        mModel.notify(
+                new Startup().addStartupRegion("employee")
+        );
+    }
+
+    @Override
+    public void update(Event event) {
+        switch (event.getType()){
+            case EventTypes.CACHE_REGIN_MODIFIED:
+                mTable.update(event);
+                break;
+        }
+    }
 
     public static void main(String[] args) {
-
-        Model employees = Employees.getInstance();
-        Controller addEmployeeCtrl = new AddEmployeeController(employees, new NewEmployee());
-        EmployeeTableView table = new EmployeeTableView();
-
-        EmployeeCacheManager.getManager().register(new Startup(), table);
-
-        employees.register(new NewEmployee(), table);
-        //employees.register(new Startup(), table);
-        employees.register(new Startup(), EmployeeCacheManager.getManager());
-
-        employees.notify(new Startup());
+        new App();
     }
 
 }
