@@ -97,7 +97,7 @@ public class CacheManager extends Model implements Observer{
     public void addElementToRegion(String regionName, Object key, Object value) throws RegionNotFoundException {
         CacheRegion region = getCacheRegion(regionName);
         region.put(key, value);
-        notify(new CacheRegionModified(regionName));
+        notify(new CacheRegionModified(regionName).setData(value));
     }
 
     /**
@@ -132,7 +132,7 @@ public class CacheManager extends Model implements Observer{
                 try {
                     //TODO: Fix hardcoded EmployeeDAO.
                     loadCacheInformationFromDatabase(region, new EmployeeDAO());
-                    notify(event);
+                    notify(((Startup) event).setData(getAllFromRegion(region)));
                 } catch (RegionNotFoundException e) {
                     e.printStackTrace();
                 }

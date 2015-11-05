@@ -6,6 +6,7 @@ import employee.components.TableView;
 import employee.events.CacheRegionModified;
 import employee.events.Event;
 import employee.events.EventTypes;
+import employee.events.Startup;
 import employee.misc.Observer;
 import employee.model.Employees;
 import employee.model.entities.Employee;
@@ -26,17 +27,34 @@ public class EmployeeTableView extends TableView implements Observer{
     public void update(Event event) {
         switch (event.getType()){
             case EventTypes.STARTUP:
-                initTableData(Employees.EMPLOYEE_CACHE_NAME);
+                initTableData(((Startup) event).getData());
                 break;
             case EventTypes.NEW_EMPLOYEE:
-                updateWithLastAdded(Employees.EMPLOYEE_CACHE_NAME);
+                //updateWithLastAdded(Employees.EMPLOYEE_CACHE_NAME);
             case EventTypes.CACHE_REGIN_MODIFIED:
-                String regionModified = getRegionNameFromEvent(event);
-                updateWithLastAdded(regionModified);
+                //String regionModified = getRegionNameFromEvent(event);
+                updateWithLastAdded(((CacheRegionModified) event).getData());
                 break;
         }
     }
 
+    /**
+     * Updates the view with new information obtained from event propagation.
+     * @param lastAdded an Object representing the information in the event propagation.
+     */
+    private void updateWithLastAdded(Object lastAdded) {
+        try {
+            addEmployee((Employee) lastAdded);
+        } catch (RegionNotFoundException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    /**
+     * DEPRECATED!! Use {@link EmployeeTableView#updateWithLastAdded(Object)} instead for
+     * get the data from event propagation rather than ask to the Cache for the new information
+     * @param regionName
+     */
     private void updateWithLastAdded(String regionName) {
         try {
             addEmployee((Employee)CacheManager.getManager().getLastFromRegion(regionName));
@@ -45,6 +63,26 @@ public class EmployeeTableView extends TableView implements Observer{
         }
     }
 
+    /**
+     * Init the view with information obtained from event propagation.
+     * @param initialTableData an ArrayList representing all the information contained in
+     * the a specific cache region.
+     */
+    private void initTableData(ArrayList<Object> initialTableData) {
+        try {
+            for(Object employee : initialTableData){
+                addEmployee((Employee)employee);
+            }
+        } catch (RegionNotFoundException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    /**
+     * DEPRECATED!! Use {@link EmployeeTableView#initTableData(ArrayList)} (Object)} instead for
+     * get the data from event propagation rather than ask to the Cache for the new information
+     * @param regionName
+     */
     private void initTableData(String regionName) {
         try {
             for(Object employee : CacheManager.getManager().getAllFromRegion(regionName)){

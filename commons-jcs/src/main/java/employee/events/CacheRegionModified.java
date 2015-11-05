@@ -9,6 +9,7 @@ package employee.events;
 public class CacheRegionModified extends Event {
 
     private String regionModifiedName;
+    private Object data;
 
     public CacheRegionModified() {
         super(EventTypes.CACHE_REGIN_MODIFIED);
@@ -18,6 +19,15 @@ public class CacheRegionModified extends Event {
     public CacheRegionModified(String regionModifiedName) {
         super(EventTypes.CACHE_REGIN_MODIFIED);
         this.regionModifiedName = regionModifiedName;
+    }
+
+    public CacheRegionModified setData(Object data) {
+        this.data = data;
+        return this;
+    }
+
+    public Object getData() {
+        return data;
     }
 
     public CacheRegionModified(int type, String eventInformation) {

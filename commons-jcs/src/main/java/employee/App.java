@@ -28,13 +28,11 @@ public class App implements Observer{
         mTable = new EmployeeTableView();
 
         mModel.register(new Startup(), CacheManager.getManager());
-        //mModel.register(new Startup(), mTable);
         mModel.register(new Shutdown(), CacheManager.getManager());
-        mModel.register(new CacheRegionModified(), mTable);
-        mModel.register(new CacheRegionModified(), this);
 
         CacheManager.getManager().register(new Startup(), mTable);
         CacheManager.getManager().register(new CacheRegionModified(), this);
+        CacheManager.getManager().register(new Shutdown(), this);
     }
 
     private void start(){
