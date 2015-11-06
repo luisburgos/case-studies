@@ -1,0 +1,11 @@
+regions:
+    - name: Employee
+      observers:
+        - EmployeeTableView
+        - TableView_2
+    - name: regionName_2
+      observers:
+        - TableView_1
+    - name: regionName_3
+      observers:
+        - TableView_2
