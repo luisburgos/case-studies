@@ -2,13 +2,12 @@ package employee.view;
 
 import employee.cache.CacheManager;
 import employee.cache.RegionNotFoundException;
-import employee.components.TableView;
-import employee.events.CacheRegionModified;
-import employee.events.Event;
-import employee.events.EventTypes;
-import employee.events.Startup;
+import employee.view.components.TableView;
+import employee.misc.events.CacheRegionModified;
+import employee.misc.events.Event;
+import employee.misc.events.EventTypes;
+import employee.misc.events.Startup;
 import employee.misc.Observer;
-import employee.model.Employees;
 import employee.model.entities.Employee;
 
 import java.util.ArrayList;

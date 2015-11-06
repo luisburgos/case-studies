@@ -1,4 +1,4 @@
-package employee.events;
+package employee.misc.events;
 
 /**
  * Created by luisburgos on 28/10/15.

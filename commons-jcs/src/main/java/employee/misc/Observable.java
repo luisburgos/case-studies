@@ -1,6 +1,6 @@
 package employee.misc;
 
-import employee.events.Event;
+import employee.misc.events.Event;
 
 public abstract class Observable {
     

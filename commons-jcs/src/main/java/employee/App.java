@@ -3,7 +3,7 @@ package employee;
 import employee.cache.CacheManager;
 import employee.controller.AddEmployeeController;
 import employee.controller.Controller;
-import employee.events.*;
+import employee.misc.events.*;
 import employee.misc.Observer;
 import employee.model.Employees;
 import employee.model.Model;

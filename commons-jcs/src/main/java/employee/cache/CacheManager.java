@@ -2,19 +2,13 @@ package employee.cache;
 
 import employee.database.DAO;
 import employee.database.EmployeeDAO;
-import employee.events.CacheRegionModified;
-import employee.events.Event;
-import employee.events.EventTypes;
-import employee.events.Startup;
+import employee.misc.events.CacheRegionModified;
+import employee.misc.events.Event;
+import employee.misc.events.EventTypes;
+import employee.misc.events.Startup;
 import employee.misc.Observer;
 import employee.model.Model;
-import employee.model.entities.Employee;
-import org.apache.commons.jcs.JCS;
-import org.apache.commons.jcs.access.CacheAccess;
-import org.apache.commons.jcs.access.exception.CacheException;
-import sun.misc.Cache;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package employee.events;
+package employee.misc.events;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -1,4 +1,4 @@
-package employee.events;
+package employee.misc.events;
 
 /**
  * This class represents the event when a {@link employee.cache.CacheRegion} is

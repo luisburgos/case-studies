@@ -1,7 +1,7 @@
 package employee.model;
 
 
-import employee.events.Event;
+import employee.misc.events.Event;
 import employee.misc.Observable;
 import employee.misc.Observer;
 

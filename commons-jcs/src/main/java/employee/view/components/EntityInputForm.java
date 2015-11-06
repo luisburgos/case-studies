@@ -1,4 +1,4 @@
-package employee.components;
+package employee.view.components;
 
 import employee.misc.StringRes;
 

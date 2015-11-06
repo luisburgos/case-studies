@@ -4,11 +4,8 @@ import employee.cache.CacheManager;
 import employee.cache.RegionNotFoundException;
 import employee.database.DAO;
 import employee.database.EmployeeDAO;
-import employee.events.NewEmployee;
 import employee.model.entities.Employee;
 
-import java.rmi.server.ServerRef;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
