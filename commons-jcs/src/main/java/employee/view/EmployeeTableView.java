@@ -17,10 +17,18 @@ import java.util.ArrayList;
  */
 public class EmployeeTableView extends TableView implements Observer{
 
+    private static EmployeeTableView instance;
     private static final String[] COLUMN_NAMES = new String[]{"Name", "Email", "Address"};
 
-    public EmployeeTableView() {
+    private EmployeeTableView() {
         super("Employee", COLUMN_NAMES);
+    }
+
+    public synchronized static EmployeeTableView getView(){
+        if(instance == null){
+            instance = new EmployeeTableView();
+        }
+        return instance;
     }
 
     public void update(Event event) {
@@ -29,12 +37,15 @@ public class EmployeeTableView extends TableView implements Observer{
                 initTableData(((Startup) event).getData());
                 break;
             case EventTypes.NEW_EMPLOYEE:
-                //updateWithLastAdded(Employees.EMPLOYEE_CACHE_NAME);
             case EventTypes.CACHE_REGIN_MODIFIED:
-                //String regionModified = getRegionNameFromEvent(event);
                 updateWithLastAdded(((CacheRegionModified) event).getData());
                 break;
         }
+    }
+
+    public void setData(Employee data){
+        System.out.println("Adding new data");
+        addEmployee(data);
     }
 
     /**
@@ -92,13 +103,14 @@ public class EmployeeTableView extends TableView implements Observer{
         }
     }
 
-    public void addEmployee(Employee employee) {
+    private void addEmployee(Employee employee) {
         ArrayList row = new ArrayList();
         row.add(employee.getName());
         row.add(employee.getEmail());
         row.add(employee.getAddress());
         add(row);
     }
+
 
 
     private String getRegionNameFromEvent(Event event) {

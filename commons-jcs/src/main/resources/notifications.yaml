@@ -1,11 +1,14 @@
-regions:
-    - name: Employee
-      observers:
-        - EmployeeTableView
-        - TableView_2
-    - name: regionName_2
-      observers:
-        - TableView_1
-    - name: regionName_3
-      observers:
-        - TableView_2
+notifications:
+ - !employee.notifications.NotificationWrapper
+   regionName: employee
+   listeners:
+      - !employee.notifications.NotificationListener
+        classname: employee.view.EmployeeTableView
+        method: setData
+ - !employee.notifications.NotificationWrapper
+   regionName: course
+   listeners:
+      - !employee.notifications.NotificationListener
+        classname: CourseTableView
+        method: loadData
+

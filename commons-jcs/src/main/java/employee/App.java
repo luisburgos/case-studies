@@ -7,6 +7,7 @@ import employee.misc.events.*;
 import employee.misc.Observer;
 import employee.model.Employees;
 import employee.model.Model;
+import employee.notifications.PushNotificationSystem;
 import employee.view.EmployeeTableView;
 
 /**
@@ -25,13 +26,15 @@ public class App implements Observer{
     private void init(){
         mModel = Employees.getInstance();
         mController = new AddEmployeeController(mModel, new NewEmployee());
-        mTable = new EmployeeTableView();
+        mTable = EmployeeTableView.getView();
+
+        CacheManager.getManager().register(new CacheRegionModified(), PushNotificationSystem.getSystem());
 
         mModel.register(new Startup(), CacheManager.getManager());
         mModel.register(new Shutdown(), CacheManager.getManager());
 
         CacheManager.getManager().register(new Startup(), mTable);
-        CacheManager.getManager().register(new CacheRegionModified(), this);
+        //CacheManager.getManager().register(new CacheRegionModified(), this); //App avisa a la tabla de modificar su contenido
         CacheManager.getManager().register(new Shutdown(), this);
     }
 
