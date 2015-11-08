@@ -1,29 +1,24 @@
 package employee.notifications;
 
+import employee.App;
 import employee.misc.Observer;
 import employee.misc.events.CacheRegionModified;
 import employee.misc.events.Event;
 import employee.misc.events.EventTypes;
-import employee.model.entities.Employee;
-import employee.view.EmployeeTableView;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by luisburgos on 6/11/15.
  */
-public class PushNotificationSystem implements Observer{
+public class PushNotificationSystem {
 
     private static PushNotificationSystem notificationSystem;
     private PushNotificationManager manager;
-
-    private PushNotificationSystem(){
-        manager = PushNotificationConfigurator.getNotificationManagerFromConfigFile();
-        System.out.println(manager.getNotifications());
-    }
 
     public synchronized static PushNotificationSystem getSystem(){
         if(notificationSystem == null){
@@ -32,37 +27,30 @@ public class PushNotificationSystem implements Observer{
         return notificationSystem;
     }
 
-    @Override
-    public void update(Event event) {
-        if(event.getType() == EventTypes.CACHE_REGIN_MODIFIED){
-            String regionName = ((CacheRegionModified) event).getRegionModifiedName();
-            System.out.println("Region name " + regionName);
-            Object data = ((CacheRegionModified) event).getData();
-            System.out.println("Data modified " + data);
-            List<NotificationListener> notifications = manager.getByName(regionName).getListeners();
-            for(NotificationListener n : notifications){
-                System.out.println(n);
-                try {
-                    injectDataToListener(data, n.getClassname(), n.getMethod());
-                } catch (ClassNotFoundException e) {
-                    System.out.println("Cannot inject data to " + n.getClassname());
-                    e.printStackTrace();
-                } catch (NoSuchMethodException e) {
-                    System.out.println("Cannot inject data to " + n.getMethod());
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
+    public void register(Object subscriber){
+        String classpath = subscriber.getClass().getCanonicalName();
+        for(NotificationWrapper n : manager.getNotifications()){
+            for(NotificationListener l : n.getListeners()){
+                if(l.getClasspath().equals(classpath)){
+                    l.setInstance(subscriber);
                 }
             }
-
         }
     }
 
-    private void injectDataToListener(Object data, String classname, String method) throws
+    public void notify(Notification notification) {
+        for(NotificationWrapper n : manager.getNotifications()){
+            if(n.getRegionName().equals(notification.getFrom())){
+                notifyListeners(n, notification.getData());
+            }
+        }
+    }
+
+    private PushNotificationSystem(){
+        manager = NotificationManagerConfigurator.createNotificationManagerFromConfigFile();
+    }
+
+    private void injectDataToListener(Object data, Object instance, String classname, String method) throws
             ClassNotFoundException,
             NoSuchMethodException,
             InvocationTargetException,
@@ -70,23 +58,13 @@ public class PushNotificationSystem implements Observer{
             InstantiationException {
         Class<?> classHolder = Class.forName(classname);
         Method methodToCall = getMethod(data, classHolder, method);
-        Object instanceClass = getInstanceClass(classHolder);
+        Object instanceClass = instance;
         invokeInjectionMethod(instanceClass, methodToCall, data);
-    }
-
-    private Object getInstanceClass(Class<?> classHolder) throws
-            IllegalAccessException,
-            InvocationTargetException,
-            InstantiationException {
-        Constructor[] cons = classHolder.getDeclaredConstructors();
-        cons[0].setAccessible(true);
-        return cons[0].newInstance();
     }
 
     private void invokeInjectionMethod(Object target, Method methodToCall, Object... params) throws
             InvocationTargetException,
             IllegalAccessException {
-        System.out.println("Invoking " + methodToCall.getName());
         methodToCall.invoke(target, params);
     }
 
@@ -95,13 +73,26 @@ public class PushNotificationSystem implements Observer{
         return classHolder.getMethod(method, data.getClass());
     }
 
-    /*public static void main(String[] args) {
-        PushNotificationSystem p = PushNotificationSystem.getSystem();
-        Employee emp = new Employee();
-        emp.setName("Luis");
-        emp.setEmail("Test");
-        emp.setAddress("Test");
-        p.update(new CacheRegionModified("employee")
-                .setData(emp));
-    }*/
+    private void notifyListeners(NotificationWrapper n, Object data) {
+        for(NotificationListener listener : n.getListeners()){
+            try {
+                injectDataToListener(
+                        data,
+                        listener.getInstance(),
+                        listener.getClasspath(),
+                        listener.getMethod()
+                );
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

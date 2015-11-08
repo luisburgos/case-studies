@@ -10,6 +10,8 @@ public class NotificationWrapper {
     private String regionName;
     private List<NotificationListener> listeners;
 
+    public NotificationWrapper(){}
+
     public String getRegionName() {
         return regionName;
     }
@@ -26,11 +28,4 @@ public class NotificationWrapper {
         this.listeners = listeners;
     }
 
-    @Override
-    public String toString() {
-        return "NotificationWrapper{" +
-                "regionName='" + regionName + '\'' +
-                ", listeners=" + listeners +
-                '}';
-    }
 }

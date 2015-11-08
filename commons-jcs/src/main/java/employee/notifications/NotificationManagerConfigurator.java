@@ -9,9 +9,9 @@ import java.util.ArrayList;
 /**
  * Created by luisburgos on 6/11/15.
  */
-public class PushNotificationConfigurator {
+public class NotificationManagerConfigurator {
 
-    public static PushNotificationManager getNotificationManagerFromConfigFile() {
+    public static PushNotificationManager createNotificationManagerFromConfigFile() {
 
         File file = new File((ClassLoader.getSystemResource("notifications.yaml").getFile()));
         YamlReader reader = null;

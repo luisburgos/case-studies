@@ -5,17 +5,26 @@ package employee.notifications;
  */
 public class NotificationListener {
 
-    private String classname;
+    private Object instance;
+    private String classpath;
     private String method;
 
     public NotificationListener() { }
 
-    public String getClassname() {
-        return classname;
+    public Object getInstance() {
+        return instance;
     }
 
-    public void setClassname(String classname) {
-        this.classname = classname;
+    public void setInstance(Object instance) {
+        this.instance = instance;
+    }
+
+    public String getClasspath() {
+        return classpath;
+    }
+
+    public void setClasspath(String classpath) {
+        this.classpath = classpath;
     }
 
     public String getMethod() {
@@ -26,11 +35,4 @@ public class NotificationListener {
         this.method = method;
     }
 
-    @Override
-    public String toString() {
-        return "NotificationListener{" +
-                "classname='" + classname + '\'' +
-                ", method='" + method + '\'' +
-                '}';
-    }
 }

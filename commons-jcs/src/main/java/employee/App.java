@@ -7,13 +7,14 @@ import employee.misc.events.*;
 import employee.misc.Observer;
 import employee.model.Employees;
 import employee.model.Model;
+import employee.model.entities.Employee;
 import employee.notifications.PushNotificationSystem;
 import employee.view.EmployeeTableView;
 
 /**
  * Created by luisburgos on 26/10/15.
  */
-public class App implements Observer{
+public class App {
 
     private Model mModel;
     private Controller mController;
@@ -24,18 +25,14 @@ public class App implements Observer{
     }
 
     private void init(){
+
         mModel = Employees.getInstance();
         mController = new AddEmployeeController(mModel, new NewEmployee());
-        mTable = EmployeeTableView.getView();
-
-        CacheManager.getManager().register(new CacheRegionModified(), PushNotificationSystem.getSystem());
+        mTable = new EmployeeTableView();
 
         mModel.register(new Startup(), CacheManager.getManager());
         mModel.register(new Shutdown(), CacheManager.getManager());
 
-        CacheManager.getManager().register(new Startup(), mTable);
-        //CacheManager.getManager().register(new CacheRegionModified(), this); //App avisa a la tabla de modificar su contenido
-        CacheManager.getManager().register(new Shutdown(), this);
     }
 
     private void start(){
@@ -43,15 +40,6 @@ public class App implements Observer{
         mModel.notify(
                 new Startup().addStartupRegion("employee")
         );
-    }
-
-    @Override
-    public void update(Event event) {
-        switch (event.getType()){
-            case EventTypes.CACHE_REGIN_MODIFIED:
-                mTable.update(event);
-                break;
-        }
     }
 
     public static void main(String[] args) {

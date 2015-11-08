@@ -3,12 +3,12 @@ notifications:
    regionName: employee
    listeners:
       - !employee.notifications.NotificationListener
-        classname: employee.view.EmployeeTableView
+        classpath: employee.view.EmployeeTableView
         method: setData
  - !employee.notifications.NotificationWrapper
    regionName: course
    listeners:
       - !employee.notifications.NotificationListener
-        classname: CourseTableView
+        classpath: CourseTableView
         method: loadData
 

@@ -59,12 +59,4 @@ public class Employees extends Model {
         }
     }
 
-    /**
-     * @return an Collection representing all entries on the table EMPLOYEE from database
-     */
-    public Collection<Employee> getAllEmployees(){
-        DAO dao = new EmployeeDAO();
-        return dao.getAll().values();
-    }
-
 }

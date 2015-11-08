@@ -8,6 +8,8 @@ import employee.misc.events.EventTypes;
 import employee.misc.events.Startup;
 import employee.misc.Observer;
 import employee.model.Model;
+import employee.notifications.Notification;
+import employee.notifications.PushNotificationSystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,14 +24,10 @@ import java.util.Map;
  *
  * Created by luisburgos on 1/11/15.
  */
-public class CacheManager extends Model implements Observer{
+public class CacheManager implements Observer{
 
     private static CacheManager cacheManager;
     private HashMap<String, CacheRegion> cacheRegions;
-
-    private CacheManager(){
-        cacheRegions = new HashMap<>();
-    }
 
     public synchronized static CacheManager getManager(){
         if(cacheManager == null){
@@ -91,7 +89,11 @@ public class CacheManager extends Model implements Observer{
     public void addElementToRegion(String regionName, Object key, Object value) throws RegionNotFoundException {
         CacheRegion region = getCacheRegion(regionName);
         region.put(key, value);
-        notify(new CacheRegionModified(regionName).setData(value));
+        PushNotificationSystem.getSystem().notify(
+                new Notification()
+                .setFrom(regionName)
+                .setData(getAllFromRegion(regionName))
+        );
     }
 
     /**
@@ -121,12 +123,16 @@ public class CacheManager extends Model implements Observer{
     @Override
     public void update(Event event) {
         if (event.getType() == EventTypes.STARTUP){
-            for(String region : ((Startup) event).getStartupRegions()){
-                initCacheRegion(region);
+            for(String regionName : ((Startup) event).getStartupRegions()){
+                initCacheRegion(regionName);
                 try {
                     //TODO: Fix hardcoded EmployeeDAO.
-                    loadCacheInformationFromDatabase(region, new EmployeeDAO());
-                    notify(((Startup) event).setData(getAllFromRegion(region)));
+                    loadCacheInformationFromDatabase(regionName, new EmployeeDAO());
+                    PushNotificationSystem.getSystem().notify(
+                            new Notification()
+                                    .setFrom(regionName)
+                                    .setData(getAllFromRegion(regionName))
+                    );
                 } catch (RegionNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -136,6 +142,10 @@ public class CacheManager extends Model implements Observer{
         if(event.getType() == EventTypes.SHUTDOWN){
             dropAllRegionsData();
         }
+    }
+
+    private CacheManager(){
+        cacheRegions = new HashMap<>();
     }
 
     /**

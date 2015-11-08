@@ -22,7 +22,6 @@ public class PushNotificationManager {
     public NotificationWrapper getByName(String name){
         NotificationWrapper wrapperByName = null;
         for(NotificationWrapper wrapper : notifications){
-            System.out.println(wrapper);
             if(wrapper.getRegionName().equalsIgnoreCase(name)){
                 wrapperByName = wrapper;
             }
@@ -30,10 +29,4 @@ public class PushNotificationManager {
         return wrapperByName;
     }
 
-    @Override
-    public String toString() {
-        return "PushNotificationManager{" +
-                "notifications=" + notifications +
-                '}';
-    }
 }
