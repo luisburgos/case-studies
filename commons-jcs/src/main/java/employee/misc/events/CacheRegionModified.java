@@ -12,12 +12,12 @@ public class CacheRegionModified extends Event {
     private Object data;
 
     public CacheRegionModified() {
-        super(EventTypes.CACHE_REGIN_MODIFIED);
+        super(EventTypes.CACHE_REGION_MODIFIED);
         regionModifiedName = "";
     }
 
     public CacheRegionModified(String regionModifiedName) {
-        super(EventTypes.CACHE_REGIN_MODIFIED);
+        super(EventTypes.CACHE_REGION_MODIFIED);
         this.regionModifiedName = regionModifiedName;
     }
 

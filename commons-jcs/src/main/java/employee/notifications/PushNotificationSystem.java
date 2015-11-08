@@ -76,6 +76,9 @@ public class PushNotificationSystem {
     private void notifyListeners(NotificationWrapper n, Object data) {
         for(NotificationListener listener : n.getListeners()){
             try {
+                if(listener.getInstance() == null){
+                    break;
+                }
                 injectDataToListener(
                         data,
                         listener.getInstance(),
