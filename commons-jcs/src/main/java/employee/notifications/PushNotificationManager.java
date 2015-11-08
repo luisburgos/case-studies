@@ -3,6 +3,10 @@ package employee.notifications;
 import java.util.List;
 
 /**
+ * Holds all the information from "notifications.yaml" configuration file.
+ * Provides an access to specifics {@link NotificationWrapper} when a region
+ * changes and needs to notify this change.
+ *
  * Created by luisburgos on 6/11/15.
  */
 public class PushNotificationManager {

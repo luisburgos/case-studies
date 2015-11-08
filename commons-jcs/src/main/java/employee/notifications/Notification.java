@@ -1,6 +1,9 @@
 package employee.notifications;
 
 /**
+ * Provides a holder for information that needs to
+ * be broadcast to clients.
+ *
  * Created by luisburgos on 7/11/15.
  */
 public class Notification {

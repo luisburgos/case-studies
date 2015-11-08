@@ -1,6 +1,12 @@
 package employee.notifications;
 
 /**
+ * Provides a holder for the information of the listener or
+ * client that wants to be notified with data from the
+ * {@link PushNotificationSystem}.
+ * The instance variable is obtained from the client registration on
+ * the {@link PushNotificationSystem#register(Object)} method.
+ *
  * Created by luisburgos on 6/11/15.
  */
 public class NotificationListener {

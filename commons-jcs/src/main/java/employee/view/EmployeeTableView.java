@@ -25,6 +25,10 @@ public class EmployeeTableView extends TableView {
         PushNotificationSystem.getSystem().register(this);
     }
 
+    /**
+     * Injects data to the table
+     * @param data
+     */
     public void setData(ArrayList<Employee> data){
         resetTable();
         for(Employee element : data){
@@ -32,6 +36,10 @@ public class EmployeeTableView extends TableView {
         }
     }
 
+    /**
+     * Adds an Employee object row to the table
+     * @param employee
+     */
     private void addEmployee(Employee employee) {
         ArrayList row = new ArrayList();
         row.add(employee.getName());

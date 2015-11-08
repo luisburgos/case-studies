@@ -3,6 +3,8 @@ package employee.notifications;
 import java.util.List;
 
 /**
+ * Provides a holder for the information about the region and
+ * the clients that want to be notified when a region changes their data.
  * Created by luisburgos on 7/11/15.
  */
 public class NotificationWrapper {
