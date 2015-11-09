@@ -1,10 +1,10 @@
 package employee.controller;
 
-import employee.events.*;
+import employee.misc.events.*;
 import employee.model.entities.Employee;
 import employee.model.Employees;
 import employee.model.Model;
-import employee.components.EntityInputForm;
+import employee.view.components.EntityInputForm;
 
 import javax.swing.*;
 import java.awt.event.*;

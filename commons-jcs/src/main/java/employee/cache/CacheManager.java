@@ -2,19 +2,15 @@ package employee.cache;
 
 import employee.database.DAO;
 import employee.database.EmployeeDAO;
-import employee.events.CacheRegionModified;
-import employee.events.Event;
-import employee.events.EventTypes;
-import employee.events.Startup;
+import employee.misc.events.CacheRegionModified;
+import employee.misc.events.Event;
+import employee.misc.events.EventTypes;
+import employee.misc.events.Startup;
 import employee.misc.Observer;
 import employee.model.Model;
-import employee.model.entities.Employee;
-import org.apache.commons.jcs.JCS;
-import org.apache.commons.jcs.access.CacheAccess;
-import org.apache.commons.jcs.access.exception.CacheException;
-import sun.misc.Cache;
+import employee.notifications.Notification;
+import employee.notifications.PushNotificationSystem;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,14 +24,10 @@ import java.util.Map;
  *
  * Created by luisburgos on 1/11/15.
  */
-public class CacheManager extends Model implements Observer{
+public class CacheManager implements Observer{
 
     private static CacheManager cacheManager;
     private HashMap<String, CacheRegion> cacheRegions;
-
-    private CacheManager(){
-        cacheRegions = new HashMap<>();
-    }
 
     public synchronized static CacheManager getManager(){
         if(cacheManager == null){
@@ -97,7 +89,11 @@ public class CacheManager extends Model implements Observer{
     public void addElementToRegion(String regionName, Object key, Object value) throws RegionNotFoundException {
         CacheRegion region = getCacheRegion(regionName);
         region.put(key, value);
-        notify(new CacheRegionModified(regionName));
+        PushNotificationSystem.getSystem().notify(
+                new Notification()
+                .setFrom(regionName)
+                .setData(getAllFromRegion(regionName))
+        );
     }
 
     /**
@@ -127,12 +123,16 @@ public class CacheManager extends Model implements Observer{
     @Override
     public void update(Event event) {
         if (event.getType() == EventTypes.STARTUP){
-            for(String region : ((Startup) event).getStartupRegions()){
-                initCacheRegion(region);
+            for(String regionName : ((Startup) event).getStartupRegions()){
+                initCacheRegion(regionName);
                 try {
                     //TODO: Fix hardcoded EmployeeDAO.
-                    loadCacheInformationFromDatabase(region, new EmployeeDAO());
-                    notify(event);
+                    loadCacheInformationFromDatabase(regionName, new EmployeeDAO());
+                    PushNotificationSystem.getSystem().notify(
+                            new Notification()
+                                    .setFrom(regionName)
+                                    .setData(getAllFromRegion(regionName))
+                    );
                 } catch (RegionNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -142,6 +142,10 @@ public class CacheManager extends Model implements Observer{
         if(event.getType() == EventTypes.SHUTDOWN){
             dropAllRegionsData();
         }
+    }
+
+    private CacheManager(){
+        cacheRegions = new HashMap<>();
     }
 
     /**

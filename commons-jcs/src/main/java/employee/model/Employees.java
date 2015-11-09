@@ -4,11 +4,8 @@ import employee.cache.CacheManager;
 import employee.cache.RegionNotFoundException;
 import employee.database.DAO;
 import employee.database.EmployeeDAO;
-import employee.events.NewEmployee;
 import employee.model.entities.Employee;
 
-import java.rmi.server.ServerRef;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -60,14 +57,6 @@ public class Employees extends Model {
         } catch (RegionNotFoundException e) {
             System.err.println(e.getMessage());
         }
-    }
-
-    /**
-     * @return an Collection representing all entries on the table EMPLOYEE from database
-     */
-    public Collection<Employee> getAllEmployees(){
-        DAO dao = new EmployeeDAO();
-        return dao.getAll().values();
     }
 
 }

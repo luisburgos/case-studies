@@ -1,4 +1,4 @@
-package employee.events;
+package employee.misc.events;
 
 import java.util.ArrayList;
 
@@ -8,10 +8,20 @@ import java.util.ArrayList;
 public class Startup extends Event {
 
     private ArrayList<String> startupRegions;
+    private ArrayList<Object> data;
 
     public Startup() {
         super(EventTypes.STARTUP);
         startupRegions = new ArrayList<>();
+    }
+
+    public ArrayList<Object> getData() {
+        return data;
+    }
+
+    public Startup setData(ArrayList<Object> data) {
+        this.data = data;
+        return this;
     }
 
     public Startup addStartupRegion(String regionName){

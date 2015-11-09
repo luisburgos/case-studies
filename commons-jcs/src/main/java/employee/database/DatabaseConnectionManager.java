@@ -8,20 +8,20 @@ import java.util.logging.Logger;
 /**
  * Manage the connection to SQLite database
  */
-public class DatabaseSource {
+public class DatabaseConnectionManager {
 
     private static final String DATABASE_JDBC_NAME = "org.sqlite.JDBC";
     private static final String DATABASE_SOURCE_TYPE = "jdbc:sqlite:";
     private static final String DATABASE_PATH = "./employees";
     private Connection connection;
-    private static DatabaseSource instance;
+    private static DatabaseConnectionManager instance;
 
-    private DatabaseSource() {
+    private DatabaseConnectionManager() {
     }
 
-    public synchronized static DatabaseSource getDatabaseSource(){
+    public synchronized static DatabaseConnectionManager getDatabaseSource(){
         if(instance == null){
-            instance = new DatabaseSource();
+            instance = new DatabaseConnectionManager();
         }
         return instance;
     }
@@ -36,10 +36,10 @@ public class DatabaseSource {
             connection = DriverManager.getConnection(DATABASE_SOURCE_TYPE + DATABASE_PATH);
         }
         catch ( SQLException ex ) {
-            Logger.getLogger(DatabaseSource.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DatabaseConnectionManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch ( ClassNotFoundException ex ) {
-            Logger.getLogger(DatabaseSource.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DatabaseConnectionManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return connection;
     }
@@ -52,7 +52,7 @@ public class DatabaseSource {
             connection.close();
         }
         catch ( SQLException ex ) {
-            Logger.getLogger(DatabaseSource.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DatabaseConnectionManager.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

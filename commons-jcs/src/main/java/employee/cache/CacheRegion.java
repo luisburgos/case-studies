@@ -52,7 +52,7 @@ public class CacheRegion {
      * Deletes all information in this cache region.
      */
     public void dropCacheData() {
-        System.out.println("Dropping all cache data");
+        System.out.println("Dropping all cache data from" + regionName);
         for(Object key : getCacheKeys()){
             cache.remove(key);
         }

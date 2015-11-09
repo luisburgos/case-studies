@@ -1,7 +1,6 @@
-package employee.events;
+package employee.misc.events;
 
 import employee.model.Employees;
-import employee.model.entities.Employee;
 
 /**
  * Created by luisburgos on 26/10/15.

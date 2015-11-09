@@ -2,12 +2,13 @@ package employee.view;
 
 import employee.cache.CacheManager;
 import employee.cache.RegionNotFoundException;
-import employee.components.TableView;
-import employee.events.CacheRegionModified;
-import employee.events.Event;
-import employee.events.EventTypes;
+import employee.notifications.PushNotificationSystem;
+import employee.view.components.TableView;
+import employee.misc.events.CacheRegionModified;
+import employee.misc.events.Event;
+import employee.misc.events.EventTypes;
+import employee.misc.events.Startup;
 import employee.misc.Observer;
-import employee.model.Employees;
 import employee.model.entities.Employee;
 
 import java.util.ArrayList;
@@ -15,47 +16,31 @@ import java.util.ArrayList;
 /**
  * Created by luisburgos on 26/10/15.
  */
-public class EmployeeTableView extends TableView implements Observer{
+public class EmployeeTableView extends TableView {
 
     private static final String[] COLUMN_NAMES = new String[]{"Name", "Email", "Address"};
 
     public EmployeeTableView() {
         super("Employee", COLUMN_NAMES);
+        PushNotificationSystem.getSystem().register(this);
     }
 
-    public void update(Event event) {
-        switch (event.getType()){
-            case EventTypes.STARTUP:
-                initTableData(Employees.EMPLOYEE_CACHE_NAME);
-                break;
-            case EventTypes.NEW_EMPLOYEE:
-                updateWithLastAdded(Employees.EMPLOYEE_CACHE_NAME);
-            case EventTypes.CACHE_REGIN_MODIFIED:
-                String regionModified = getRegionNameFromEvent(event);
-                updateWithLastAdded(regionModified);
-                break;
+    /**
+     * Injects data to the table
+     * @param data
+     */
+    public void setData(ArrayList<Employee> data){
+        resetTable();
+        for(Employee element : data){
+            addEmployee(element);
         }
     }
 
-    private void updateWithLastAdded(String regionName) {
-        try {
-            addEmployee((Employee)CacheManager.getManager().getLastFromRegion(regionName));
-        } catch (RegionNotFoundException e) {
-            System.err.println(e.getMessage());
-        }
-    }
-
-    private void initTableData(String regionName) {
-        try {
-            for(Object employee : CacheManager.getManager().getAllFromRegion(regionName)){
-                addEmployee((Employee)employee);
-            }
-        } catch (RegionNotFoundException e) {
-            System.err.println(e.getMessage());
-        }
-    }
-
-    public void addEmployee(Employee employee) {
+    /**
+     * Adds an Employee object row to the table
+     * @param employee
+     */
+    private void addEmployee(Employee employee) {
         ArrayList row = new ArrayList();
         row.add(employee.getName());
         row.add(employee.getEmail());
@@ -63,8 +48,4 @@ public class EmployeeTableView extends TableView implements Observer{
         add(row);
     }
 
-
-    private String getRegionNameFromEvent(Event event) {
-        return ((CacheRegionModified) event).getRegionModifiedName();
-    }
 }

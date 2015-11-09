@@ -1,6 +1,6 @@
 package employee.controller;
 
-import employee.events.Event;
+import employee.misc.events.Event;
 import employee.misc.Observer;
 import employee.model.Model;
 

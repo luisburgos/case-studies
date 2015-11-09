@@ -1,0 +1,14 @@
+notifications:
+ - !employee.notifications.NotificationWrapper
+   regionName: employee
+   listeners:
+      - !employee.notifications.NotificationListener
+        classpath: employee.view.EmployeeTableView
+        method: setData
+ - !employee.notifications.NotificationWrapper
+   regionName: course
+   listeners:
+      - !employee.notifications.NotificationListener
+        classpath: CourseTableView
+        method: loadData
+

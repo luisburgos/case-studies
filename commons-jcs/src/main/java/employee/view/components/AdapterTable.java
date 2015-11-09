@@ -1,4 +1,4 @@
-package employee.components;
+package employee.view.components;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
